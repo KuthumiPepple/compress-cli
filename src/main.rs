@@ -16,5 +16,11 @@ fn main() {
 
     let mut encoder = GzEncoder::new(output, Compression::default());
     copy(&mut input, &mut encoder).unwrap();
-    encoder.finish().unwrap();
+    
+    let output = encoder.finish().unwrap();
+    let source_size: u64 = input.get_ref().metadata().unwrap().len();
+    let target_size: u64 = output.metadata().unwrap().len();
+    println!("source size: {:?} bytes", source_size);
+    println!("target size: {:?} bytes", target_size);
+    println!("compression ratio: {:.2}", source_size as f64 / target_size as f64);
 }
